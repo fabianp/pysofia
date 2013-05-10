@@ -6,11 +6,12 @@ import numpy as np
 sources =['pysofia/_sofia_ml.pyx'] + glob.glob('pysofia/src/*.cc')
 
 setup(name='pysofia',
-    version='0.2',
+    version='0.3',
     description='Python bindings for sofia-ml',
+    long_description=open('README.rst').read(),
     author='Fabian Pedregosa',
     author_email='fabian@fseoane.net',
-    url='',
+    url='http://pypi.python.org/pypi/pysofia',
     packages=['pysofia'],
     cmdclass = {'build_ext': build_ext},
     ext_modules = [Extension('pysofia._sofia_ml',
