@@ -1,4 +1,8 @@
-Bindings for sofia-ml library
+
+PySofia
+=============================
+
+PySofia is a python wrapper around the methods present in the C++ sofia-ml library. These include Stochastic Gradient Descent implementations of some ranking algorithms, notably RankSVM.
 
 Dependencies
 ------------
@@ -6,8 +10,14 @@ Dependencies
   - cython >= 0.17 (previous versions will not work)
   - numpy
 
+Installation
+============
+
+    $ pip install -U pysofia
+
+
 Methods
--------
+=======
 
 pysofia.train_sgd
 
