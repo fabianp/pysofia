@@ -15,7 +15,7 @@ setup(name='pysofia',
     url='http://pypi.python.org/pypi/pysofia',
     packages=['pysofia'],
     cmdclass = {'build_ext': build_ext},
-    ext_modules = [Extension('pysofia._sofia_ml',
+    ext_modules = [Extension('_sofia_ml',
         sources=sources,
         language='c++', include_dirs=[np.get_include()])],
 )
