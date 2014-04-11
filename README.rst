@@ -30,6 +30,11 @@ pysofia.train_sgd
 pysofia.compat.RankSVM implements an estimator following the conventions
 used in scikit-learn.
 
+Development
+===========
+
+Check out the latest version at github: https://github.com/fabianp/pysofia/
+
 License
 =======
 
