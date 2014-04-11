@@ -9,6 +9,9 @@ Dependencies
 
   - cython >= 0.17 (previous versions will not work)
   - numpy
+  - A C++ compiler (gcc will do)
+
+You will not need to install sofia-ml since it is incuded in this distribution
 
 Installation
 ============
@@ -26,3 +29,9 @@ pysofia.train_sgd
 
 pysofia.compat.RankSVM implements an estimator following the conventions
 used in scikit-learn.
+
+
+Authors
+=======
+
+PySofia is the work of Fabian Pedregosa. The sofia-ml library is written by D. Sculley.
