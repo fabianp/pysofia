@@ -3,12 +3,38 @@ import numpy as np
 from sklearn import datasets
 import _sofia_ml
 
+from enum import Enum
+
 if sys.version_info[0] < 3:
     bstring = basestring
 else:
     bstring = str
 
-def sgd_train(X, y, b, alpha, n_features=None, model='rank', max_iter=100, step_probability=0.5):
+class learner_type(Enum):
+    r"""
+    define learner type
+    """
+    pegasos = 0
+    margin_perceptron = 1
+    passive_aggressive = 2
+    logreg_pegasos = 3
+    logreg = 4
+    lms_regression = 5
+    sgd_svm = 6
+    romma = 7
+
+class loop_type(Enum):
+    r"""
+    define loop type
+    """
+    rank = 'rank'
+    roc = 'roc'
+    combined_ranking = 'combined-ranking'
+    stochastic = 'stochastic'
+    balanced_stochastic = 'balanced-stochastic'
+
+def svm_train(X, y, b, alpha, n_features, learner, loop,
+              max_iter=100, step_probability=0.5):
     """
     Minimizes an expression of the form
 
@@ -26,7 +52,7 @@ def sgd_train(X, y, b, alpha, n_features=None, model='rank', max_iter=100, step_
 
     alpha: float
 
-    model : {'rank', 'combined-ranking', 'roc'}
+    loop : {'rank', 'combined-ranking', 'roc', 'stochastic', 'balanced-stochastic'}
 
     Returns
     -------
@@ -36,17 +62,17 @@ def sgd_train(X, y, b, alpha, n_features=None, model='rank', max_iter=100, step_
     """
     if isinstance(X, bstring):
         if n_features is None:
-            n_features = 2 ** 17 # the default in sofia-ml TODO: parse file to see
-        w = _sofia_ml.train(X, n_features, alpha, max_iter, False, model,
-            step_probability)
+            n_features = X.shape[1] # the default in sofia-ml TODO: parse file to see
+        w = _sofia_ml.train(X, n_features, alpha, max_iter, False,
+                            learner.value, loop.value, step_probability)
     else:
         with tempfile.NamedTemporaryFile() as f:
             datasets.dump_svmlight_file(X, y, f.name, query_id=b)
-            w = _sofia_ml.train(f.name, X.shape[1], alpha, max_iter, False, model,
-                step_probability)
+            w = _sofia_ml.train(f.name, X.shape[1], alpha, max_iter, False,
+                                learner.value, loop.value, step_probability)
     return w, None
 
-def sgd_predict(data, coef, blocks=None):
+def svm_predict(data, coef, blocks=None):
     # TODO: isn't query_id in data ???
     s_coef = ''
     for e in coef:

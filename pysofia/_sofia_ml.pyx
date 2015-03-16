@@ -52,19 +52,25 @@ cdef extern from "src/sofia-ml-methods.h" namespace "sofia_ml":
     void SvmPredictionsOnTestSet(SfDataSet test_data,
         SfWeightVector, vector[float]*)
 
+
 def train(train_data, int n_features, float alpha, int max_iter, bool fit_intercept,
-          model, float step_probability):
+          learner, loop, float step_probability):
     cdef SfDataSet *data = new SfDataSet(train_data, BUFFER_MB, fit_intercept)
     cdef SfWeightVector *w = new SfWeightVector(n_features)
     cdef float c = 0.0
     cdef int i
-    if model == 'rank':
-        StochasticRankLoop(deref(data), PEGASOS, BASIC_ETA, alpha, c, max_iter, w)
-    elif model == 'roc':
-        StochasticRocLoop(deref(data), SGD_SVM, BASIC_ETA, alpha, c, max_iter, w)
-    elif model == 'combined-ranking':
-        StochasticClassificationAndRankLoop(deref(data), SGD_SVM, BASIC_ETA, alpha, c,
+
+    if loop == 'rank':
+        StochasticRankLoop(deref(data), learner, BASIC_ETA, alpha, c, max_iter, w)
+    elif loop == 'roc':
+        StochasticRocLoop(deref(data), learner, BASIC_ETA, alpha, c, max_iter, w)
+    elif loop == 'combined-ranking':
+        StochasticClassificationAndRankLoop(deref(data), learner, BASIC_ETA, alpha, c,
             step_probability, max_iter, w)
+    elif loop == 'stochastic':
+        StochasticOuterLoop(deref(data), learner, BASIC_ETA, alpha, c, max_iter, w)
+    elif loop == 'balanced-stochastic':
+        BalancedStochasticOuterLoop(deref(data), learner, BASIC_ETA, alpha, c, max_iter, w)
     else:
         raise NotImplementedError
     cdef np.ndarray[ndim=1, dtype=np.float64_t] coef = np.empty(n_features)
