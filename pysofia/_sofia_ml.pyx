@@ -31,6 +31,12 @@ cdef extern from "src/sofia-ml-methods.h" namespace "sofia_ml":
         PEGASOS_ETA
         CONSTANT
 
+    void StochasticOuterLoop(SfDataSet, LearnerType, EtaType,
+                           float, float, int, SfWeightVector*)
+
+    void BalancedStochasticOuterLoop(SfDataSet, LearnerType, EtaType,
+                           float, float, int, SfWeightVector*)
+
     void StochasticRocLoop(SfDataSet, LearnerType, EtaType,
                            float, float, int, SfWeightVector*)
 
