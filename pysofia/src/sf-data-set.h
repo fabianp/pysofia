@@ -41,6 +41,9 @@ class SfDataSet {
   // Use buffer_mb megabytes for the buffer.
   SfDataSet(const string& file_name, int buffer_mb, bool use_bias_term);
 
+  // Construct and fill a SfDataSet with data from the given matrix.
+  SfDataSet(double *data, double *label, int n_samples, int n_features, bool use_bias_term);
+
   // Debug string.
   string AsString() const;
   
