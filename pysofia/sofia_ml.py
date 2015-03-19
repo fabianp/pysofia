@@ -121,3 +121,36 @@ def svm_predict(data, coef, predict_type=predict_type.linear, blocks=None):
             datasets.dump_svmlight_file(X, y, f.name, query_id=blocks)
             prediction = _sofia_ml.predict(f.name, s_coef, predict_type.value, False)
         return prediction
+
+def svm_update(X, y, coef, alpha, n_samples, n_features, learner, loop, eta,
+              max_iter=100, step_probability=0.5):
+    """
+    Update SVM using new data
+
+    Parameters
+    ----------
+    X : input data
+
+    y : target labels
+
+    alpha: float
+
+    loop : {'rank', 'combined-ranking', 'roc', 'stochastic', 'balanced-stochastic'}
+
+    Returns
+    -------
+    coef
+
+    """
+    if isinstance(X, np.ndarray):
+        if n_features is None:
+            n_features = X.shape[1]
+
+        if n_samples is None:
+            n_samples = X.shape[0]
+
+        w = _sofia_ml.update_fast(np.float64(X), np.float64(y), np.float64(coef), n_samples, n_features, alpha,
+                                  max_iter, False, learner.value, loop.value, eta.value, step_probability)
+    else:
+        raise ValueError("Input should be matrix!")
+    return w

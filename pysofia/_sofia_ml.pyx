@@ -19,6 +19,7 @@ cdef extern from "src/sofia-ml-methods.h":
     cdef cppclass SfWeightVector:
         SfWeightVector(int)
         SfWeightVector(string)
+        SfWeightVector(double *, int)
         string AsString()
         float ValueOf(int)
 
@@ -79,6 +80,9 @@ def train(train_data, int n_features, float alpha, int max_iter, bool fit_interc
     cdef np.ndarray[ndim=1, dtype=np.float64_t] coef = np.empty(n_features)
     for i in range(n_features):
         coef[i] = w.ValueOf(i)
+
+    del data, w
+
     return coef
 
 def train_fast(np.ndarray[np.float64_t, ndim=2] train_data,
@@ -109,6 +113,9 @@ def train_fast(np.ndarray[np.float64_t, ndim=2] train_data,
     cdef np.ndarray[ndim=1, dtype=np.float64_t] coef = np.empty(n_features)
     for i in range(n_features):
         coef[i] = w.ValueOf(i)
+
+    del data, w
+
     return coef
 
 def predict(test_data, string coef, predict_type, bool fit_intercept):
@@ -126,6 +133,9 @@ def predict(test_data, string coef, predict_type, bool fit_intercept):
     cdef np.ndarray[ndim=1, dtype=np.float64_t] out = np.empty(predictions.size())
     for i in range(predictions.size()):
         out[i] = predictions.at(i)
+
+    del test_dataset, w, predictions
+
     return out
 
 def predict_fast(np.ndarray[np.float64_t, ndim=2] test_data,
@@ -147,4 +157,42 @@ def predict_fast(np.ndarray[np.float64_t, ndim=2] test_data,
     cdef np.ndarray[ndim=1, dtype=np.float64_t] out = np.empty(predictions.size())
     for i in range(predictions.size()):
         out[i] = predictions.at(i)
+
+    del test_dataset, w, predictions
+
     return out
+
+def update_fast(np.ndarray[np.float64_t, ndim=2] train_data,
+                np.ndarray[np.float64_t, ndim=1] train_label,
+                np.ndarray[np.float64_t, ndim=1] prev_coef,
+                int n_samples, int n_features, float alpha, int max_iter,
+                bool fit_intercept, learner, loop, eta, float step_probability):
+
+    cdef SfDataSet *data = new SfDataSet(&train_data[0,0], &train_label[0],
+                                    n_samples, n_features, fit_intercept)
+    cdef SfWeightVector *w = new SfWeightVector(&prev_coef[0], n_features)
+
+    cdef float c = 0.0
+    cdef int i
+
+    if loop == 'rank':
+        StochasticRankLoop(deref(data), learner, eta, alpha, c, max_iter, w)
+    elif loop == 'roc':
+        StochasticRocLoop(deref(data), learner, eta, alpha, c, max_iter, w)
+    elif loop == 'combined-ranking':
+        StochasticClassificationAndRankLoop(deref(data), learner, eta, alpha, c,
+            step_probability, max_iter, w)
+    elif loop == 'stochastic':
+        StochasticOuterLoop(deref(data), learner, eta, alpha, c, max_iter, w)
+    elif loop == 'balanced-stochastic':
+        BalancedStochasticOuterLoop(deref(data), learner, eta, alpha, c, max_iter, w)
+    else:
+        raise NotImplementedError
+
+    cdef np.ndarray[ndim=1, dtype=np.float64_t] coef = np.empty(n_features)
+    for i in range(n_features):
+        coef[i] = w.ValueOf(i)
+
+    del data, w
+
+    return coef

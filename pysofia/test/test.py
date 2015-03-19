@@ -17,11 +17,11 @@ coef = sofia_ml.svm_train(X, y, None, 0.01, n_samples, n_features, sofia_ml.lear
                           sofia_ml.loop_type.roc, sofia_ml.eta_type.constant,
                           max_iter=100000)
 
-coef2 = sofia_ml.svm_train(X, y, None, 0.01, n_samples, n_features, sofia_ml.learner_type.pegasos,
+prediction1 = sofia_ml.svm_predict(X, coef, sofia_ml.predict_type.logistic)
+
+coef2 = sofia_ml.svm_update(X, y, coef, 0.01, n_samples, n_features, sofia_ml.learner_type.pegasos,
                           sofia_ml.loop_type.roc, sofia_ml.eta_type.constant,
                           max_iter=100000)
-
-prediction = sofia_ml.svm_predict(X, coef, sofia_ml.predict_type.logistic)
 
 print "done"
 

@@ -43,6 +43,9 @@ class SfWeightVector {
   // zero, scale_ set to 1, and squared_norm_ set to 0.
   SfWeightVector(int dimensionality);
 
+  // Simple copy constructor, needed to allocate a new array of weights.
+  SfWeightVector(const double *coef, int dimensionality);
+
   // Constructs a weight vector from a string, which is identical in format
   // to that produced by the AsString() member method.
   SfWeightVector(const string& weight_vector_string);

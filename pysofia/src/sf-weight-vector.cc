@@ -55,6 +55,25 @@ SfWeightVector::SfWeightVector(int dimensionality)
   }
 }
 
+SfWeightVector::SfWeightVector(const double* coef, int dimensionality)
+  : scale_(1.0),
+    squared_norm_(0.0),
+    dimensions_(dimensionality) {
+  // Allocate weights_.
+  weights_ = new float[dimensions_];
+  if (weights_ == NULL) {
+    std::cerr << "Not enough memory for weight vector of dimension: "
+              <<  dimensions_ << std::endl;
+    exit(1);
+  }
+
+  // Fill weights_ from coef.
+  for (int i = 0; i < dimensions_; ++i) {
+    weights_[i] = coef[i];
+    squared_norm_ += weights_[i] * weights_[i];
+  }
+}
+
 SfWeightVector::SfWeightVector(const string& weight_vector_string) 
   : scale_(1.0),
     squared_norm_(0.0),
