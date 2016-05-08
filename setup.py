@@ -7,10 +7,10 @@ from setuptools import setup, Extension, Command
 sources =['pysofia/_sofia_ml.pyx'] + glob.glob('pysofia/src/*.cc')
 
 setup(name='pysofia',
-    version='0.4',
+    version='0.9',
     description='Python bindings for sofia-ml',
     long_description=open('README.rst').read(),
-    author='Fabian Pedregosa',
+    author='Fabian Pedregosa & Csy',
     author_email='fabian@fseoane.net',
     url='http://pypi.python.org/pypi/pysofia',
     packages=['pysofia'],

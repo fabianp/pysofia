@@ -69,6 +69,10 @@ class SfSparseVector {
   // term to 1 iff use_bias_term is set to true.
   SfSparseVector(const char* in_string, bool use_bias_term);
 
+  // Constructs a new vector from a double array, but also sets the bias
+  // term to 1 iff use_bias_term is set to true.
+  SfSparseVector(const double* in_array, double label, int offset, int n_features, bool use_bias_term);
+
   // Construct a new vector that is the difference of two vectors, (a - b).
   // This is useful for ranking problems, etc.
   SfSparseVector(const SfSparseVector& a, const SfSparseVector& b, float y);

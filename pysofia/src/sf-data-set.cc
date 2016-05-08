@@ -57,6 +57,19 @@ SfDataSet::SfDataSet(const string& file_name,
   delete[] local_buffer;
 }
 
+SfDataSet::SfDataSet(double *data, double *label,
+                int n_samples, int n_features, bool use_bias_term)
+    : use_bias_term_(use_bias_term) {
+
+    int offset;
+    for (int i = 0; i < n_samples; ++i) {
+        // calculate offset
+        offset = i * n_features;
+        vectors_.push_back(SfSparseVector(data, label[i],
+                                offset, n_features, use_bias_term_));
+    }
+}
+
 string SfDataSet::AsString() const {
   string out_string;
   for (unsigned long int i = 0; i < vectors_.size(); ++i) {

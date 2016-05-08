@@ -50,6 +50,30 @@ SfSparseVector::SfSparseVector(const char* in_string,
   Init(in_string);
 }
 
+SfSparseVector::SfSparseVector(const double* in_array, double label,
+                 int offset, int n_features, bool use_bias_term)
+    : y_(float(label)),
+      a_(0.0),
+      squared_norm_(0.0),
+      group_id_("") {
+
+    if (use_bias_term) {
+        SetBias();
+    } else {
+        NoBias();
+    }
+
+    // Parse the feature-value pair.
+    // Assume the matrix is row-major, n_samples x n_features
+    for (int i = offset; i < offset+n_features; ++i) {
+        if (in_array[i] != 0.0) {
+            int id = i - offset;
+            float value = in_array[i];
+            PushPair(id, value);
+        }
+    }
+}
+
 SfSparseVector::SfSparseVector(const SfSparseVector& a,
 				 const SfSparseVector& b,
 				 float y) 
