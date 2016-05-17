@@ -1,3 +1,9 @@
+.. image:: https://travis-ci.org/fabianp/pysofia.svg?branch=master
+    :target: https://travis-ci.org/fabianp/pysofia
+
+Maintainer wanted
+=================
+This project is looking for a maintaner, please contact me if you would like to adopt it.
 
 PySofia
 =============================
@@ -22,7 +28,7 @@ Installation
 Methods
 =======
 
-pysofia.train_sgd
+pysofia.train_svm
 
     Trains a model using stochastic gradient descent. See docstring for
     more details.
