@@ -2,7 +2,7 @@ import numpy as np
 from scipy import stats
 from sklearn import base, linear_model, cross_validation
 from sklearn.externals import joblib
-from .sofia_ml import svm_train
+from .sofia_ml import svm_train, learner_type, loop_type, eta_type
 
 class RankSVM(base.BaseEstimator):
     """
@@ -16,8 +16,11 @@ class RankSVM(base.BaseEstimator):
         self.model = model
 
     def fit(self, X, y, query_id=None):
-        self.coef_, _ = svm_train(X, y, query_id, self.alpha, max_iter=self.max_iter,
-            model=self.model)
+        n_samples, n_features = X.shape
+
+        self.coef_ = svm_train(X, y, query_id, self.alpha, n_samples, n_features,
+            learner_type.sgd_svm, loop_type.rank, eta_type.basic_eta,
+            max_iter=self.max_iter)
         return self
 
     def rank(self, X):
