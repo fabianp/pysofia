@@ -100,9 +100,9 @@ def svm_train(X, y, b, alpha, n_samples, n_features, learner, loop, eta,
 
 def svm_predict(data, coef, predict_type=predict_type.linear, blocks=None):
     # TODO: isn't query_id in data ???
-    s_coef = ''
+    s_coef = b''
     for e in coef:
-        s_coef += '%.5f ' % e
+        s_coef += b'%.5f ' % e
     s_coef = s_coef[:-1]
 
     if isinstance(data, bstring):

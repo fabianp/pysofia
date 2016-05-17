@@ -1,6 +1,7 @@
-from sofia_ml import svm_train, svm_predict
-import metrics, compat
-from misc import transform_pairwise
-import datasets
+from .sofia_ml import *
+from . import metrics
+from . import compat
+from .misc import transform_pairwise
+from . import datasets
 
 __version__ = '0.9'
