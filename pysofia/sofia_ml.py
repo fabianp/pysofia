@@ -1,7 +1,7 @@
 import sys, tempfile
 import numpy as np
 from sklearn import datasets
-import _sofia_ml
+from . import _sofia_ml
 
 from enum import Enum
 
