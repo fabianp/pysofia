@@ -25,4 +25,4 @@ install:
   - source activate test-environment
   - python setup.py develop
 script:
-- nosetests -v
+  - nosetests -v
