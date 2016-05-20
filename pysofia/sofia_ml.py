@@ -109,7 +109,7 @@ def svm_predict(data, coef, predict_type=predict_type.linear, blocks=None):
         s_coef += b'%.5f ' % e
     s_coef = s_coef[:-1]
 
-    if isinstance(data, bstring):
+    if isinstance(data, six.string_types):
         return _sofia_ml.predict(data, s_coef, predict_type.value, False)
     elif isinstance(data, np.ndarray):
         y = np.ones(data.shape[0])
