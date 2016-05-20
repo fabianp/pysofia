@@ -15,6 +15,9 @@ Dependencies
 
   - cython >= 0.17 (previous versions will not work)
   - numpy
+  - sklearn >= 0.15
+  - six
+  - enum34 (for Python versions before 3.4)
   - A C++ compiler (gcc will do)
 
 You will not need to install sofia-ml since it is incuded in this distribution
@@ -22,7 +25,7 @@ You will not need to install sofia-ml since it is incuded in this distribution
 Installation
 ============
 
-    $ pip install -U pysofia
+    $ pip install -U git+https://github.com/fabianp/pysofia.git
 
 
 Methods

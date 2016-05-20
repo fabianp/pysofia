@@ -5,3 +5,4 @@ _*.cpp
 *.so
 build
 .idea
+*.swp

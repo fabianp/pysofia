@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 from .sofia_ml import *
 from . import metrics
 from . import compat

@@ -1,14 +1,18 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+
 import sys, tempfile
+import six
 import numpy as np
 from sklearn import datasets
 from . import _sofia_ml
 
+
 from enum import Enum
 
-if sys.version_info[0] < 3:
-    bstring = basestring
-else:
-    bstring = str
 
 class learner_type(Enum):
     r"""
@@ -74,7 +78,7 @@ def svm_train(X, y, b, alpha, n_samples, n_features, learner, loop, eta,
     coef
 
     """
-    if isinstance(X, bstring):
+    if isinstance(X, six.string_types):
         if n_features is None:
             n_features = 2**17 # the default in sofia-ml TODO: parse file to see
         w = _sofia_ml.train(X, n_features, alpha, max_iter, False,
@@ -100,12 +104,12 @@ def svm_train(X, y, b, alpha, n_samples, n_features, learner, loop, eta,
 
 def svm_predict(data, coef, predict_type=predict_type.linear, blocks=None):
     # TODO: isn't query_id in data ???
-    s_coef = b''
-    for e in coef:
-        s_coef += b'%.5f ' % e
-    s_coef = s_coef[:-1]
+    s_coef = ' '.join(['%.5f' % e for e in coef[:-1]])
 
-    if isinstance(data, bstring):
+    if six.PY3:
+        s_coef = s_coef.encode('utf-8')
+
+    if isinstance(data, six.string_types):
         return _sofia_ml.predict(data, s_coef, predict_type.value, False)
     elif isinstance(data, np.ndarray):
         y = np.ones(data.shape[0])
