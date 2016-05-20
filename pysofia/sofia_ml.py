@@ -104,10 +104,10 @@ def svm_train(X, y, b, alpha, n_samples, n_features, learner, loop, eta,
 
 def svm_predict(data, coef, predict_type=predict_type.linear, blocks=None):
     # TODO: isn't query_id in data ???
-    s_coef = b''
-    for e in coef:
-        s_coef += b'%.5f ' % e
-    s_coef = s_coef[:-1]
+    s_coef = ' '.join(['%.5f' % e for e in coef[:-1]])
+
+    if six.PY3:
+        s_coef = s_coef.encode('utf-8')
 
     if isinstance(data, six.string_types):
         return _sofia_ml.predict(data, s_coef, predict_type.value, False)

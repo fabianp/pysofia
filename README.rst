@@ -15,7 +15,7 @@ Dependencies
 
   - cython >= 0.17 (previous versions will not work)
   - numpy
-  - sklearn => 0.15
+  - sklearn >= 0.15
   - six
   - enum34 (for Python versions before 3.4)
   - A C++ compiler (gcc will do)
