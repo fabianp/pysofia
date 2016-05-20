@@ -1,14 +1,18 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+
+
 import sys, tempfile
+import six
 import numpy as np
 from sklearn import datasets
 from . import _sofia_ml
 
+
 from enum import Enum
 
-if sys.version_info[0] < 3:
-    bstring = basestring
-else:
-    bstring = str
 
 class learner_type(Enum):
     r"""
@@ -74,7 +78,7 @@ def svm_train(X, y, b, alpha, n_samples, n_features, learner, loop, eta,
     coef
 
     """
-    if isinstance(X, bstring):
+    if isinstance(X, six.string_types):
         if n_features is None:
             n_features = 2**17 # the default in sofia-ml TODO: parse file to see
         w = _sofia_ml.train(X, n_features, alpha, max_iter, False,
